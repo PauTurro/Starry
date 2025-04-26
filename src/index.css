@@ -31,7 +31,7 @@
     --container-bg-color: #130e0e;
     --container-border-radius: 53px;
     --title-color: #2d2d2d;
-    --title-font-size: 2rem;
+    --title-font-size: 1.9rem;
     --input-bg-color: #fec1d0;
     --input-text-color: #747474;
   }
@@ -271,14 +271,57 @@ input:-webkit-autofill,
   }
   
   .toggle-btn.closed {
-    background-color: #ffd3d3; /* Purple */
-    border: 3.5px solid ffd3d3;
+    background-color: #eddede; /* Purple */
+    border: 3.5px solid #eddede;
   }
   
   .toggle-btn:hover {
     transform: scale(1.03); /* grow slightly on hover */
+    position: relative; /* Needed for absolute positioning of rename button if used */
+    display: flex; /* Use flex to align text and potentially other elements */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
   }
-  
+
+  .toggle-btn-wrapper {
+    position: relative; /* Positioning context for the rename button */
+    display: flex; /* Align toggle button and rename button */
+    align-items: center; /* Vertically align items */
+    gap: 8px; /* Space between toggle and rename button */
+  }
+
+  .toggle-btn-text {
+    flex-grow: 1; /* Allow text to take available space */
+    text-align: center; /* Center the text */
+  }
+
+  .rename-btn {
+    /* Reset button styles */
+    background-color: transparent;
+    border: 1px solid #aaa; /* Simple border */
+    color: #555;
+    padding: 2px 6px; /* Small padding */
+    font-size: 0.8rem; /* Smaller font */
+    font-weight: normal;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    /* Remove from general button styles if needed */
+    width: auto; /* Let it size to content */
+    height: auto;
+    margin: 0; /* Reset margin */
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+
+  .rename-btn:hover {
+    background-color: #eee;
+    color: #222;
+  }
+
+  .rename-btn:active {
+    transform: scale(0.95);
+  }
+
   /* ===========================
    13. Logout Button
      =========================== */
@@ -436,21 +479,24 @@ input:-webkit-autofill,
   /* left: 50%; Removed */
   /* transform: translate(-50%, 100%); Removed */
   width: max-content; /* Adjust width to content */
-  max-width: 90%; /* Prevent it from being too wide */
-  margin-top: 15px; /* Add some space above the list */
-  margin-bottom: 150px; /* Add space below the list */
-  /* Remove visual container styles */
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  box-shadow: none;
-  z-index: 10; /* Keep it above other potential elements if needed */
+  max-width: 100%; /* Prevent it from being too wide */
+  margin-top: 10px; /* Keep space above */
+  margin-bottom: 20px; /* Keep space below */
+  padding: 0; /* Remove padding */
+  border: none; /* Remove border */
+  background-color: transparent; /* Remove background */
+  border-radius: 0; /* Remove border-radius */
+  box-shadow: none; /* Remove shadow */
+  z-index: 10;
   display: none; /* Hide by default */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  gap: 8px; /* Add gap between items */
 }
 
-/* Class to show the token list */
+/* Class to show the token list container */
 .token-list-container.visible {
-  display: block;
+  display: flex; /* Use flex when visible */
 }
 
 .token-list-container h4 {
@@ -471,11 +517,77 @@ input:-webkit-autofill,
   font-size: 0.9rem;
   font-weight: 900;
   color: #313131;
+  margin-top: 5px; /* Keep space above the list */
+  margin-bottom: 5px; /* Keep space below the list */
+  /* width: 100%; Removed */
+  /* max-width: 350px; Removed max-width constraint */
+  text-align: left; /* Align list items left */
+  padding: 5px 10px; /* Keep padding */
+  background-color: transparent; /* Make background invisible */
+  border-radius: 0; /* Remove border-radius */
 }
 
 .token-list li {
   padding: 3px 0;
   word-break: break-all; /* Break long tokens if needed */
+}
+
+/* Common style for buttons inside the plus menu container */
+.plus-menu-btn {
+  display: inline-block;
+  /* background-color removed - will be set individually */
+  border: none;
+  color: #372d2d;
+  padding: 12px 20px; /* Further increased padding */
+  margin-top: 0; /* Rely on container gap */
+  font-size: 1.1rem; /* Further increased font size */
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 12px; /* Further increased radius */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  width: 150px; /* Further increased width */
+  text-align: center;
+}
+
+/* Individual button colors */
+/* Note: :nth-child indices account for the <ul> element */
+
+/* Tokens Button (1st button) */
+.token-list-container .plus-menu-btn:nth-child(1) {
+  background-color: #ffb3c1; /* Light Pink */
+}
+.token-list-container .plus-menu-btn:nth-child(1):hover {
+  background-color: #ed9fd3; /* Darker Light Pink */
+}
+
+/* Settings Button (3rd element, 2nd button) */
+.token-list-container .plus-menu-btn:nth-child(3) {
+  background-color: #ffb3b3; /* Light Peach */
+}
+.token-list-container .plus-menu-btn:nth-child(3):hover {
+  background-color: #f99d9d; /* Darker Light Peach */
+}
+
+/* Friends Button (4th element, 3rd button) */
+.token-list-container .plus-menu-btn:nth-child(4) {
+  background-color: #c193b5; /* Light Apricot */
+}
+.token-list-container .plus-menu-btn:nth-child(4):hover {
+  background-color: #bf79ac; /* Darker Light Apricot */
+}
+
+/* Logout Button (5th element, 4th button) */
+.token-list-container .plus-menu-btn:nth-child(5) {
+  background-color: #dea2a2; /* Original Logout Color */
+}
+.token-list-container .plus-menu-btn:nth-child(5):hover {
+  background-color: #131212; /* Darker Original Logout */
+}
+
+
+.plus-menu-btn:active {
+  transform: scale(0.98); /* Consistent active state */
 }
   
   /* ===========================

@@ -10,6 +10,8 @@ export default function App() {
     tokens,
     buttonState,
     isButtonDataLoaded,
+    buttonNames, // Get button names
+    updateButtonName, // Get update function
     error,
     register,
     login,
@@ -53,8 +55,10 @@ export default function App() {
             token={token}
             tokens={tokens}
             buttonState={buttonState}
+            buttonNames={buttonNames} // Pass names down
             isButtonDataLoaded={isButtonDataLoaded}
             onToggle={toggleButton}
+            onUpdateName={updateButtonName} // Pass update function down
             onLogout={logout}
           />
         )}

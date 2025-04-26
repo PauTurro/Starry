@@ -29,6 +29,7 @@ export function useFirebase() {
   const [user, setUser] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [buttonState, setButtonState] = useState({});
+  const [buttonNames, setButtonNames] = useState({}); // State for button names
   const [isButtonDataLoaded, setIsButtonDataLoaded] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState(null);
@@ -107,6 +108,18 @@ export function useFirebase() {
     await set(ref(db, path), next);
   };
 
+  // Update the name of a button
+  const updateButtonName = async (token, newName) => {
+    if (!user || !tokens.includes(token)) return; // Basic auth check
+    const path = `tokens/${token}/buttonName`;
+    try {
+      await set(ref(db, path), newName || null); // Set to null if empty to remove
+    } catch (err) {
+      console.error("Error updating button name:", err);
+      showError("Failed to update name.");
+    }
+  };
+
   // Share a device token with another user (by UID)
   const shareToken = async (token, targetUid) => {
     // grant authorization in token metadata
@@ -160,18 +173,31 @@ export function useFirebase() {
     listenToAllButtonStates(userTokens);
   }, []);
 
-  // Listen to buttonStatus for each token in the list
+  // Listen to buttonStatus and buttonName for each token in the list
   const listenToAllButtonStates = (tokenList) => {
-    const loaded = {};
+    const loadedStates = {};
+    const loadedNames = {};
     setButtonState({});
+    setButtonNames({}); // Reset names state
     setIsButtonDataLoaded(false);
 
     if (tokenList.length === 0) {
       setIsButtonDataLoaded(true);
+      setIsButtonDataLoaded(true);
       return;
     }
 
+    const checkAllLoaded = () => {
+      if (
+        Object.keys(loadedStates).length === tokenList.length &&
+        Object.keys(loadedNames).length === tokenList.length
+      ) {
+        setIsButtonDataLoaded(true);
+      }
+    };
+
     tokenList.forEach((tok) => {
+      // Listener for buttonStatus
       const statusRef = ref(db, `tokens/${tok}/buttonStatus`);
       onValue(
         statusRef,
@@ -179,15 +205,34 @@ export function useFirebase() {
           let state = snap.val();
           if (typeof state !== "string") {
             state = "closed";
-            set(statusRef, state);
+            // Optionally set default state in DB if needed: set(statusRef, state);
           }
           setButtonState((prev) => ({ ...prev, [tok]: state }));
-          loaded[tok] = true;
-          if (Object.keys(loaded).length === tokenList.length) {
-            setIsButtonDataLoaded(true);
-          }
+          loadedStates[tok] = true;
+          checkAllLoaded();
         },
-        console.error
+        (err) => {
+          console.error(`Error listening to status for ${tok}:`, err);
+          loadedStates[tok] = true; // Mark as loaded even on error to avoid blocking
+          checkAllLoaded();
+        }
+      );
+
+      // Listener for buttonName
+      const nameRef = ref(db, `tokens/${tok}/buttonName`);
+      onValue(
+        nameRef,
+        (snap) => {
+          const name = snap.val() || null; // Store null if no name exists
+          setButtonNames((prev) => ({ ...prev, [tok]: name }));
+          loadedNames[tok] = true;
+          checkAllLoaded();
+        },
+        (err) => {
+          console.error(`Error listening to name for ${tok}:`, err);
+          loadedNames[tok] = true; // Mark as loaded even on error
+          checkAllLoaded();
+        }
       );
     });
   };
@@ -199,6 +244,7 @@ export function useFirebase() {
       else {
         setTokens([]);
         setButtonState({});
+        setButtonNames({}); // Clear names on logout
         setIsButtonDataLoaded(false);
         clearError(); // Use clearError
       }
@@ -220,6 +266,7 @@ export function useFirebase() {
     user,
     tokens,
     buttonState,
+    buttonNames, // Return button names
     isButtonDataLoaded,
     authChecked,
     error,
@@ -227,6 +274,7 @@ export function useFirebase() {
     login,
     logout,
     toggleButton,
+    updateButtonName, // Return update function
     shareToken,
     revokeShare,
     clearError,

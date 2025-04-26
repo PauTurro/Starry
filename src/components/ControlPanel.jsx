@@ -1,83 +1,93 @@
-
-// ===============================
-// File: src/components/ControlPanel.jsx
-// ===============================
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 
 export default function ControlPanel({
   tokens,
   buttonState,
+  buttonNames,
   isButtonDataLoaded,
   onToggle,
+  onUpdateName,
+  onDelete,
   onLogout,
 }) {
-  const [showTokens, setShowTokens] = useState(false);
-  const [visible, setVisible] = useState({});
-  const initialRef = useRef({});
+  const [showPlusMenu, setShowPlusMenu] = useState(false);
+  const [showTokenListContent, setShowTokenListContent] = useState(false);
 
-  // Capture initial snapshot **once** per data load
-  useEffect(() => {
-    if (!isButtonDataLoaded) return;
-    const vis = {};
-    const init = {};
-    tokens.forEach((tok) => {
-      vis[tok] = false;
-      init[tok] = buttonState[tok] ?? "closed";
-    });
-    setVisible(vis);
-    initialRef.current = init;
-    // INTENTIONALLY omit buttonState from deps so initial snapshot stays fixed
-  }, [isButtonDataLoaded, tokens]);
 
-  // Reveal button when its state changes beyond the stored initial value
-  useEffect(() => {
-    if (!isButtonDataLoaded) return;
-    tokens.forEach((tok) => {
-      const cur = buttonState[tok] ?? "closed";
-      const init = initialRef.current[tok];
-      if (init !== undefined && cur !== init && !visible[tok]) {
-        setVisible((prev) => ({ ...prev, [tok]: true }));
-      }
-    });
-  }, [buttonState, isButtonDataLoaded, tokens, visible]);
-  useEffect(() => {
-    if (!isButtonDataLoaded) return;
-    tokens.forEach((tok) => {
-      const cur = buttonState[tok] ?? "closed";
-      const init = initialRef.current[tok];
-      if (cur !== init && !visible[tok]) {
-        setVisible((prev) => ({ ...prev, [tok]: true }));
-      }
-    });
-  }, [buttonState, isButtonDataLoaded, tokens, visible]);
+
+  const handleToggle = (tok) => {
+    onToggle(tok);
+  };
+
+  const handleDelete = (tok) => {
+    onDelete(tok);
+  };
 
   return (
     <div id="controlSection" className="control-panel">
       <div className="token-header">
-        <button className="plus-button" onClick={() => setShowTokens((v) => !v)}>+</button>
+        <button className="plus-button" onClick={() => setShowPlusMenu((v) => !v)}>
+          +
+        </button>
       </div>
 
       <div className="toggle-buttons">
-        {tokens.map((tok, idx) =>
-          visible[tok] && (
-            <button
-              key={tok}
-              id={`toggle-${tok}`}
-              className={`toggle-btn ${buttonState[tok] === "open" ? "open" : "closed"}`}
-              onClick={() => onToggle(tok)}
-            >
-              Button {idx + 1} {buttonState[tok] === "open" ? "Open" : "Closed"}
-            </button>
-          )
-        )}
+        {tokens.map((tok, idx) => {
+          if (buttonState[tok] !== "open" && buttonState[tok] !== "closed") {
+            return null;
+          }
+
+          return (
+            <div key={tok} className="toggle-btn-wrapper">
+              <button
+                id={`toggle-${tok}`}
+                className={`toggle-btn ${buttonState[tok] === "open" ? "open" : "closed"}`}
+                onClick={() => handleToggle(tok)}
+              >
+                <span className="toggle-btn-text">
+                  {buttonNames?.[tok] || `Button ${idx + 1}`}
+                </span>
+              </button>
+              <button
+                className="rename-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const currentName = buttonNames?.[tok] || `Button ${idx + 1}`;
+                  const newName = prompt(`Enter new name for \"${currentName}\"`, currentName);
+                  if (newName != null) onUpdateName(tok, newName.trim());
+                }}
+              >
+                Edit
+              </button>
+              <button
+                className="delete-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(tok);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          );
+        })}
       </div>
 
-      <button id="logoutBtn" onClick={onLogout}>Logout</button>
+      <div className={`token-list-container ${showPlusMenu ? "visible" : ""}`}>
+        <button className="plus-menu-btn" onClick={() => setShowTokenListContent((v) => !v)}>
+          Tokens
+        </button>
+        {showTokenListContent && (
+          <ul className="token-list">
+            {tokens.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        )}
 
-      <div className={`token-list-container ${showTokens ? "visible" : ""}`}>
-        <ul className="token-list">
-          {tokens.map((t) => (<li key={t}>{t}</li>))}
-        </ul>
+        <button className="plus-menu-btn" onClick={() => alert("Settings clicked!")}>Settings</button>
+        <button className="plus-menu-btn" onClick={() => alert("Friends clicked!")}>Friends</button>
+        <button className="plus-menu-btn" onClick={onLogout}>Logout</button>
       </div>
     </div>
   );

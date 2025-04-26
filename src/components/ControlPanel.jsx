@@ -26,7 +26,10 @@ export default function ControlPanel({
   return (
     <div id="controlSection" className="control-panel">
       <div className="token-header">
-        <button className="plus-button" onClick={() => setShowPlusMenu((v) => !v)}>
+        <button className="plus-button" onClick={() => {
+          console.log("Plus button clicked!");
+          setShowPlusMenu((v) => !v);
+        }}>
           +
         </button>
       </div>

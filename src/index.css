@@ -758,6 +758,88 @@ input:-webkit-autofill,
       border-radius: var(--mobile-container-border-radius, 10px) !important;
     }
   }
+
+/* ===========================
+   21. Media Queries for Mobile Devices
+   =========================== */
+@media screen and (max-width: 320px) {
+  /* Styles for screens up to 320px wide */
+  .title {
+    font-size: 1.6rem !important;
+  }
+
+  button,
+  .login-btn,
+  .toggle-btn,
+  #logoutBtn {
+    font-size: 1rem !important;
+    padding: 8px 12px !important;
+  }
+
+  .plus-button {
+    width: 25px;
+    height: 25px;
+    font-size: 1.2rem !important;
+    line-height: 23px !important;
+  }
+
+  .token-list-container {
+    display: flex !important;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  /* Styles for screens up to 375px wide */
+  .title {
+    font-size: 1.7rem !important;
+  }
+
+  button,
+  .login-btn,
+  .toggle-btn,
+  #logoutBtn {
+    font-size: 1.1rem !important;
+    padding: 9px 13px !important;
+  }
+
+  .plus-button {
+    width: 27px;
+    height: 27px;
+    font-size: 1.3rem !important;
+    line-height: 25px !important;
+  }
+
+  .token-list-container {
+    display: flex !important;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  /* Styles for screens up to 414px wide */
+  .title {
+    font-size: 1.8rem !important;
+  }
+
+  button,
+  .login-btn,
+  .toggle-btn,
+  #logoutBtn {
+    font-size: 1.2rem !important;
+    padding: 10px 14px !important;
+  }
+
+  .plus-button {
+    width: 29px;
+    height: 29px;
+    font-size: 1.4rem !important;
+    line-height: 27px !important;
+  }
+
+  .token-list-container {
+    display: flex !important;
+  }
+}
+
 /* ===========================
    20. Error Banner Styling
    =========================== */

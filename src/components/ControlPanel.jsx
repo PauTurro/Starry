@@ -62,15 +62,6 @@ export default function ControlPanel({
               >
                 Edit
               </button>
-              <button
-                className="delete-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(tok);
-                }}
-              >
-                Delete
-              </button>
             </div>
           );
         })}
@@ -90,7 +81,7 @@ export default function ControlPanel({
 
         <button className="plus-menu-btn" onClick={() => alert("Settings clicked!")}>Settings</button>
         <button className="plus-menu-btn" onClick={() => alert("Friends clicked!")}>Friends</button>
-        <button className="plus-menu-btn" onClick={onLogout}>Logout</button>
+      <button className="plus-menu-btn" onClick={onLogout}>Logout</button>
       </div>
     </div>
   );

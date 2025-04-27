@@ -1,0 +1,892 @@
+/* =========================== 
+   1. Basic Reset
+   =========================== */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+
+    font-weight: 400; /* default weight for normal text */
+  }
+  
+
+  html, body {
+    touch-action: pan-x pan-y;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Remove iOS tap highlight color */
+  body, button, input, textarea, select {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* ===========================
+     2. Body and Background
+     =========================== */
+  :root {
+    --app-bg-color: #faaccc;
+    --app-text-color: #ffffff;
+    --container-bg-color: #130e0e;
+    --container-border-radius: 53px;
+    --title-color: #2d2d2d;
+    --title-font-size: 1.9rem;
+    --input-bg-color: #fec1d0;
+    --input-text-color: #747474;
+  }
+
+  body {
+    background-color: var(--app-bg-color);
+    color: var(--app-text-color);
+    width: 100%;
+    min-height: 100vh;
+    /* overflow: hidden; Removed */
+  }
+  
+  .background {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Changed to center */
+    background-color: var(--app-bg-color);
+    width: 100%;
+    min-height: 100vh;
+    /* padding-bottom: 100px; Removed */
+    box-sizing: border-box; /* Include padding in height calculation */
+  }
+  
+  .container {
+    position: relative; /* Establishes a stacking context */
+    z-index: 0;         /* Ensures children are above the pseudo-element */
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 30px 30px 120px 30px; /* Reset to moderate padding */
+    background-color: transparent; /* We'll use the pseudo-element for the background */
+    border-radius: 30px; /* Example */
+
+    box-shadow: 0px 0px 0px #ffffff00;
+    /* overflow: hidden; Ensure this remains removed */
+  }
+  
+  .container::before {
+    background-color: #ffffff00;
+
+    content: "";
+    position: absolute;
+    z-index: -1; /* Places the gradient behind the container's content */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit; /* Inherit border-radius from parent */
+    
+  }
+  /* ===========================
+     4. Title
+     =========================== */
+  .title {
+    font-weight: 430;
+    font-size: var(--title-font-size);
+    color: var(--title-color);
+    margin-bottom: 25px;
+  }
+  
+  /* ===========================
+     5. Authentication Horizontal Section
+     =========================== */
+  .auth-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    margin-top: 25px;
+  }
+  
+/* ===========================
+     6. Input Fields
+     =========================== */
+     input[type="email"],
+     input[type="password"] {
+       width: 300px;
+       max-width: 300px;
+       padding: 8px;
+       font-size:0.9rem;
+       font-weight: 680;
+       border: 2px solid #fec1d0;
+       border-radius: 12px;
+       background-color: var(--input-bg-color);
+       color: var(--input-text-color);
+       outline: none;
+       transition: border-color 0.3s ease;
+     }
+     
+     /* Style the placeholder text for modern browsers */
+     input[type="email"]::placeholder,
+     input[type="password"]::placeholder {
+       color: var(--input-text-color);
+     }
+     
+     /* For older browsers using vendor prefixes */
+     input[type="email"]::-webkit-input-placeholder,
+     input[type="password"]::-webkit-input-placeholder {
+       color: var(--input-text-color);
+     }
+     
+     input[type="email"]:-ms-input-placeholder,
+     input[type="password"]:-ms-input-placeholder {
+       color: var(--input-text-color);
+     }
+     
+     input[type="email"]:focus,
+     input[type="password"]:focus {
+       border-color: rgb(239, 132, 159);
+     }
+
+
+/* ===========================
+   Autofill Styling for Webkit Browsers (Hard-Coded Colors)
+   =========================== */
+input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px rgba(255, 9, 9, 0) inset !important;
+        -webkit-text-fill-color: #888888 !important;
+        color: #888888 !important;
+        caret-color: #888888 !important;
+        background-clip: padding-box !important;
+     }
+   
+  
+  /* ===========================
+     7. Buttons (General)
+     =========================== */
+     button {
+      display: inline-block; /* Ensures the button sizes to its content */
+      padding: 6px 15px 8px 12px; /* top, right, bottom, left */
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #ee687d;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.45s ease, transform 0.2s ease;
+    }
+    
+  
+  button:hover {
+    background-color: #f44d7d;
+  }
+  
+  button:active {
+    transform: scale(1);
+  }
+  
+  /* ===========================
+     8. Login ("Go") Button
+     =========================== */
+  .login-btn {
+    min-width: 30px;
+    background-color: #ee687d;
+  }
+  
+  .login-btn:hover {
+    background-color: #f44d7d;
+  }
+  
+  /* ===========================
+   9. Control Section
+   =========================== */
+/* ID: controlSection - Container for additional control elements (e.g., toggles, settings) */
+#controlSection {
+  position: relative; /* Ensure this is the positioning context */
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally */
+  flex-grow: 1; /* Allow section to grow and fill space */
+    margin-top: 60px; /* Keep margin-top to lower position */
+    padding-bottom: 0px; /* No padding needed here */
+    /* overflow: visible; Removed */
+    gap: 15px; /* Add gap between flex children */
+  }
+
+  /* Style for the entire screen when control panel is active */
+  .control-panel-screen {
+    background-color: #ffd1bd;
+    width: 100%;
+    min-height: 100vh; /* Ensure it covers the full viewport height */
+    display: flex; /* Use flex to easily center content if needed */
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px; /* Add some padding at the top */
+    box-sizing: border-box;
+  }
+  
+  /* ===========================
+     10. Token Display
+     =========================== */
+  /* ID: tokenDisplay - Displays the user token information; customize for text size, color, etc. */
+  #tokenDisplay {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #8a6595;
+    margin-top: 20px;
+  }
+  
+  /* ===========================
+     11. Toggle Buttons Container
+     =========================== */
+  .toggle-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-top: 15px;
+  }
+  
+  /* ===========================
+     12. Toggle Buttons
+     =========================== */
+  .toggle-btn {
+    width: 250px;
+    height: 85px;
+    font-size: 28px;
+    font-weight: 550;
+    color: #372d2d;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.8s ease, transform 0.2s ease;
+    background-color: rgba(255, 207, 95, 0.7);
+  }
+  
+.toggle-btn.open {
+    background-color: #ff7e9c; /* Yellow */
+    border: 3.5px solid #ff7e9c;
+  }
+  
+  .toggle-btn.closed {
+    background-color: #eddede; /* Purple */
+    border: 3.5px solid #eddede;
+  }
+  
+  .toggle-btn:hover {
+    transform: scale(1.03); /* grow slightly on hover */
+    position: relative; /* Needed for absolute positioning of rename button if used */
+    display: flex; /* Use flex to align text and potentially other elements */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+  }
+
+  .toggle-btn-wrapper {
+    position: relative; /* Positioning context for the rename button */
+    display: flex; /* Align toggle button and rename button */
+    align-items: center; /* Vertically align items */
+    gap: 8px; /* Space between toggle and rename button */
+  }
+
+  .toggle-btn-text {
+    flex-grow: 1; /* Allow text to take available space */
+    text-align: center; /* Center the text */
+  }
+
+  .rename-btn {
+    /* Reset button styles */
+    background-color: transparent;
+    border: 1px solid #aaa; /* Simple border */
+    color: #555;
+    padding: 2px 6px; /* Small padding */
+    font-size: 0.8rem; /* Smaller font */
+    font-weight: normal;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    /* Remove from general button styles if needed */
+    width: auto; /* Let it size to content */
+    height: auto;
+    margin: 0; /* Reset margin */
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+
+  .rename-btn:hover {
+    background-color: #eee;
+    color: #222;
+  }
+
+  .rename-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* ===========================
+   13. Logout Button
+     =========================== */
+  /* ID: logoutBtn - Logout button element with hover and active animations */
+  #logoutBtn {
+    margin-top: 25px; /* Adjusted margin-top for flex gap */
+    width: 100px;
+    height: 50px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #372d2d;
+    background-color: #ff9898db;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: block; /* Restore */
+    margin-left: auto; /* Restore */
+    margin-right: auto; /* Restore */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  #logoutBtn:hover {
+    background-color: #ff8e8e;
+  }
+  
+  #logoutBtn:active {
+    transform: scale(0.98);
+  }
+  
+  @media screen and (max-width: 600px) {
+    /* Remove scrolling entirely on small screens */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      /* overflow: hidden !important; Removed to allow scrolling */
+    }
+  
+    /* Keep the fixed background */
+    body {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  
+    /* Make the container fill the screen (no scroll) */
+    .container {
+      width: 100% !important;
+      max-width: none !important;
+      /* height: 100%; Removed */
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 15px;
+      position: static !important;
+      /* overflow: hidden; Removed to allow scrolling */
+    }
+  
+    /* Adjust the title size and position */
+    .title {
+      font-size: 2.1rem !important;
+      margin-top: 20px !important;
+      margin-bottom: 20px;
+      position: relative;
+      left: 0;
+      max-width: 300px;
+      white-space: normal;
+      overflow-wrap: break-word;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    /* Stack the email & password fields vertically */
+    .auth-horizontal {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      margin-top: 16px;
+    }
+  
+    /* Make inputs fill more space on phone + border width adjustment */
+    input[type="email"],
+    input[type="password"] {
+      width: 70% !important;
+      max-width: 300px;
+      font-size: 1.15rem;
+      border-radius: 15px;
+      border: 3px solid #fec1d0;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+  
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #fec1d0;
+    }
+  
+    /* Buttons: widen, increase text size, etc. */
+    .login-btn {
+      width: 15%;
+      max-width: 200px;
+      font-size: 1.3rem;
+      margin: 0 auto;
+      border-radius: 18px;
+    }
+  
+    button {
+      width: 30%;
+      max-width: 200px;
+      font-size: 1.3rem;
+      margin: 0 auto;
+      border-radius: 18px;
+    }
+  }
+
+/* ===========================
+   18. Token Display & Button
+   =========================== */
+.token-header {
+  /* position: relative; Not needed here */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Set to center */
+  margin-bottom: 15px; /* Space below the header */
+  /* overflow: visible; Removed */
+}
+
+/* Removed obsolete #tokenDisplay rule */
+
+.plus-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%; /* Make it round */
+  font-size: 1.5rem; /* Adjust '+' size */
+  line-height: 28px; /* Center the '+' vertically */
+  color: #352b2b;
+  padding: 0; /* Remove default padding */
+  margin-left: 0; /* Remove margin */
+  flex-shrink: 0; /* Prevent button from shrinking */
+  background-color: #ff9898db; /* Match logout button color */
+}
+
+.plus-button:hover {
+  background-color: #ff8e8e; /* Match logout button hover */
+}
+
+/* ===========================
+   19. Token List Display
+   =========================== */
+.token-list-container {
+  /* position: absolute; Removed */
+  /* bottom: -10px; Removed */
+  /* left: 50%; Removed */
+  /* transform: translate(-50%, 100%); Removed */
+  width: max-content; /* Adjust width to content */
+  max-width: 100%; /* Prevent it from being too wide */
+  margin-top: 10px; /* Keep space above */
+  margin-bottom: 20px; /* Keep space below */
+  padding: 0; /* Remove padding */
+  border: none; /* Remove border */
+  background-color: transparent; /* Remove background */
+  border-radius: 0; /* Remove border-radius */
+  box-shadow: none; /* Remove shadow */
+  z-index: 10;
+  display: none; /* Hide by default */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  gap: 8px; /* Add gap between items */
+}
+
+/* Class to show the token list container */
+.token-list-container.visible {
+  display: flex; /* Use flex when visible */
+}
+
+.token-list-container h4 {
+  /* Match style of #tokenDisplay */
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #8a659500;
+  margin-bottom: 10px; /* Keep margin */
+}
+
+.token-list {
+  list-style: none; /* Remove bullet points */
+  padding-left: 0;
+  max-height: none; /* Remove max-height to show all */
+  overflow-y: visible; /* Remove scrollbar */
+  /* font-family: monospace; Removed monospace */
+  /* Match style of #tokenDisplay */
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #313131;
+  margin-top: 5px; /* Keep space above the list */
+  margin-bottom: 5px; /* Keep space below the list */
+  /* width: 100%; Removed */
+  /* max-width: 350px; Removed max-width constraint */
+  text-align: left; /* Align list items left */
+  padding: 5px 10px; /* Keep padding */
+  background-color: transparent; /* Make background invisible */
+  border-radius: 0; /* Remove border-radius */
+}
+
+.token-list li {
+  padding: 3px 0;
+  word-break: break-all; /* Break long tokens if needed */
+}
+
+/* Common style for buttons inside the plus menu container */
+.plus-menu-btn {
+  display: inline-block;
+  /* background-color removed - will be set individually */
+  border: none;
+  color: #372d2d;
+  padding: 12px 20px; /* Further increased padding */
+  margin-top: 0; /* Rely on container gap */
+  font-size: 1.1rem; /* Further increased font size */
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 12px; /* Further increased radius */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  width: 150px; /* Further increased width */
+  text-align: center;
+}
+
+/* Individual button colors */
+/* Note: :nth-child indices account for the <ul> element */
+
+/* Tokens Button (1st button) */
+.token-list-container .plus-menu-btn:nth-child(1) {
+  background-color: #ffb3c1; /* Light Pink */
+}
+.token-list-container .plus-menu-btn:nth-child(1):hover {
+  background-color: #ed9fd3; /* Darker Light Pink */
+}
+
+/* Settings Button (3rd element, 2nd button) */
+.token-list-container .plus-menu-btn:nth-child(3) {
+  background-color: #ffb3b3; /* Light Peach */
+}
+.token-list-container .plus-menu-btn:nth-child(3):hover {
+  background-color: #f99d9d; /* Darker Light Peach */
+}
+
+/* Friends Button (4th element, 3rd button) */
+.token-list-container .plus-menu-btn:nth-child(4) {
+  background-color: #c193b5; /* Light Apricot */
+}
+.token-list-container .plus-menu-btn:nth-child(4):hover {
+  background-color: #bf79ac; /* Darker Light Apricot */
+}
+
+/* Logout Button (5th element, 4th button) */
+.token-list-container .plus-menu-btn:nth-child(5) {
+  background-color: #dea2a2; /* Original Logout Color */
+}
+.token-list-container .plus-menu-btn:nth-child(5):hover {
+  background-color: #131212; /* Darker Original Logout */
+}
+
+
+.plus-menu-btn:active {
+  transform: scale(0.98); /* Consistent active state */
+}
+  
+  /* ===========================
+     15. Fade Animations
+     =========================== */
+  @keyframes fadeInTitle {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInSlower {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Title fade-in */
+  .title {
+    animation: fadeInTitle 1.5s ease forwards;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  
+  /* Inputs & register fade-in */
+  .auth-horizontal input[type="email"],
+  .auth-horizontal input[type="password"],
+  .auth-horizontal button,
+  .register-btn {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInSlower 1s ease forwards;
+  }
+  
+  /* 
+     Autofill Fix: 
+     Tries to override iOS Safari's yellow background. 
+     Not always guaranteed in a PWA, but this is the correct attempt.
+  */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: #6c6c6c !important;
+    -webkit-box-shadow: 0 0 0 30px #000000 inset !important;
+    box-shadow: 0 0 0 30px #00000000 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+  
+  /* ===========================
+   15. For Mobile (up to 768px)
+   =========================== */
+@media screen and (max-width: 768px) {
+  /* Removed fixed positioning for container */
+  /* .container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    width: 100%;
+  } */
+  /* .container { */ /* Removed fixed positioning block */
+      /* position: fixed !important; */
+      /* top: 0 !important; */
+      /* left: 0; */
+      /* right: 0; */
+      /* margin: 0 !important; */
+      /* width: 100% !important; */
+      /* background-color: white; */
+      /* z-index: 1000; */
+    /* } */
+    .container { /* Keep this block for other overrides */
+      background-color: transparent !important;
+
+      border: none !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    .container * {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+  }
+  
+  /* ===========================
+     16. Container Fade-in from JS
+     =========================== */
+  /* ID: appContainer - Main application container that fades in when ready */
+  #appContainer {
+    opacity: 0;              /* Start invisible */
+    pointer-events: none;    /* No interaction while invisible */
+    transition: opacity 0.7s ease-in-out;
+  }
+  
+  #appContainer.fade-in {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  /* Remove container shadow if user is logged in */
+  .container.logged-in {
+    box-shadow: none !important;
+  }
+  
+  /* ===========================
+     17. Desktop (>=769px)
+     Remove box styling ONLY if .logged-in
+     =========================== */
+  @media (min-width: 769px) {
+    .container.logged-in {
+      margin: 0 !important;
+      max-width: 100% !important;
+      padding: 0 !important;
+      background-color: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+    }
+  }
+  
+  /**********************************************
+   *  FADE IN: Token, Toggle Buttons, and Logout
+   **********************************************/
+  
+  /* 1) Token Display (appears first, small movement) */
+  #tokenDisplay {
+    opacity: 0;
+    transform: translateY(3px);
+    animation: fadeInSlower 0.8s ease 0s forwards; /* 0.8s, starts at 0s */
+  }
+  
+  /* 2) Toggle Buttons Container (slight delay after token) */
+  .toggle-buttons {
+    opacity: 0;
+    transform: translateY(3px);
+    animation: fadeInSlower 0.8s ease 0.2s forwards; /* 0.8s, starts at 0.2s */
+  }
+  
+  /* 3) Logout Button (appears last, a bit more delay) */
+  #logoutBtn {
+    opacity: 0;
+    transform: translateY(0px);
+    animation: fadeInSlower 1.4s ease 0.2s forwards; /* 1.4s, starts at 0.2s */
+  }
+  
+  @media screen and (max-width: 600px) {
+    /* Custom button styles for mobile */
+    button,
+    .login-btn,
+    .toggle-btn,
+    #logoutBtn {
+      padding: var(--mobile-button-padding, 10px 15px) !important;
+      font-size: var(--mobile-button-font-size, 1.2rem) !important;
+      border-radius: var(--mobile-button-border-radius, 20px) !important;
+      margin: var(--mobile-button-margin, 5px auto) !important;
+    }
+    
+    /* Custom token text styles for mobile */
+    #tokenDisplay {
+      font-size: var(--mobile-token-font-size, 1.2rem) !important;
+      color: var(--mobile-token-text-color, #a070af) !important;
+      text-align: center !important;
+      margin: var(--mobile-token-margin, 10px auto) !important;
+    }
+    
+    /* Custom container adjustments for mobile */
+    .container {
+      padding: var(--mobile-container-padding, 15px) !important;
+      border-radius: var(--mobile-container-border-radius, 10px) !important;
+    }
+  }
+
+/* ===========================
+   21. Media Queries for Mobile Devices
+   =========================== */
+@media screen and (max-width: 320px) {
+  /* Styles for screens up to 320px wide */
+  .title {
+    font-size: 1.6rem !important;
+  }
+
+  button,
+  .login-btn,
+  .toggle-btn,
+  #logoutBtn {
+    font-size: 1rem !important;
+    padding: 8px 12px !important;
+  }
+
+  .plus-button {
+    width: 25px;
+    height: 25px;
+    font-size: 1.2rem !important;
+    line-height: 23px !important;
+  }
+
+  .token-list-container {
+    display: flex !important;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  /* Styles for screens up to 375px wide */
+  .title {
+    font-size: 1.7rem !important;
+  }
+
+  button,
+  .login-btn,
+  .toggle-btn,
+  #logoutBtn {
+    font-size: 1.1rem !important;
+    padding: 9px 13px !important;
+  }
+
+  .plus-button {
+    width: 27px;
+    height: 27px;
+    font-size: 1.3rem !important;
+    line-height: 25px !important;
+  }
+
+  .token-list-container {
+    display: flex !important;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  /* Styles for screens up to 414px wide */
+  .title {
+    font-size: 1.8rem !important;
+  }
+
+  button,
+  .login-btn,
+  .toggle-btn,
+  #logoutBtn {
+    font-size: 1.2rem !important;
+    padding: 10px 14px !important;
+  }
+
+  .plus-button {
+    width: 29px;
+    height: 29px;
+    font-size: 1.4rem !important;
+    line-height: 27px !important;
+  }
+
+  .token-list-container {
+    display: flex !important;
+  }
+}
+
+/* ===========================
+   20. Error Banner Styling
+   =========================== */
+   .error-banner {
+    background-color: #ff4d4d; /* Red background */
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 5px;
+    margin: 10px auto; /* Centered with some margin */
+    max-width: 90%; /* Limit width */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: fixed; /* Keep it at the top */
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%, 0); /* Center horizontally */
+    z-index: 1001; /* Ensure it's above other content */
+    animation: fadeInError 0.5s ease forwards;
+  }
+  
+  /* When fading out */
+  .error-banner.fade-out {
+    animation: fadeOutError 0.6s ease forwards;
+  }
+  
+  /* Slide down and fade in */
+  @keyframes fadeInError {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -20px); /* Up 20px */
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0); /* Final position */
+    }
+  }
+  
+  /* Slide up and fade out */
+  @keyframes fadeOutError {
+    from {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, -20px); /* Slide up */
+    }
+  }

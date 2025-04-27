@@ -454,8 +454,8 @@ input:-webkit-autofill,
 /* Removed obsolete #tokenDisplay rule */
 
 .plus-button {
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%; /* Make it round */
   font-size: 1.5rem; /* Adjust '+' size */
   line-height: 28px; /* Center the '+' vertically */
@@ -537,16 +537,19 @@ input:-webkit-autofill,
   display: inline-block;
   /* background-color removed - will be set individually */
   border: none;
-  color: #332b54;
   padding: 12px 20px; /* Further increased padding */
   margin-top: 0; /* Rely on container gap */
-  font-size: 1.1rem; /* Further increased font size */
-  font-weight: 500;
+  width: 350px;
+  height: 90px;
+  font-size: 50px;
+  font-weight: 450;
+  color: #372d2d;
+  border-radius: 25px;
   text-decoration: none;
   border-radius: 12px; /* Further increased radius */
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.1s ease;
-  width: 150px; /* Further increased width */
+
   text-align: center;
 }
 

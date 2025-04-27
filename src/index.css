@@ -266,8 +266,8 @@ input:-webkit-autofill,
   }
   
 .toggle-btn.open {
-    background-color: #ffd7ea; /* Yellow */
-    border: 3.5px solid #ffd7ea;
+    background-color: #ffc8e1; /* Yellow */
+    border: 3.5px solid #ffc8e1;
   }
   
   .toggle-btn.closed {
@@ -298,8 +298,8 @@ input:-webkit-autofill,
   .rename-btn {
     /* Reset button styles */
     background-color: transparent;
-    border: 1px solid #ffd7ea; /* Simple border */
-    color: #ffd7ea;
+    border: 1px solid #ffc8e100; /* Simple border */
+    color: #ffc8e1;
     padding: 2px 6px; /* Small padding */
     font-size: 0.8rem; /* Smaller font */
     font-weight: normal;
@@ -463,11 +463,11 @@ input:-webkit-autofill,
   padding: 0; /* Remove default padding */
   margin-left: 0; /* Remove margin */
   flex-shrink: 0; /* Prevent button from shrinking */
-  background-color: #ff9898db; /* Match logout button color */
+  background-color: #ffc8e1; /* Match logout button color */
 }
 
 .plus-button:hover {
-  background-color: #ff8e8e; /* Match logout button hover */
+  background-color: #f1a3c6; /* Match logout button hover */
 }
 
 /* ===========================

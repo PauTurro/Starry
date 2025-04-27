@@ -62,15 +62,6 @@ export default function ControlPanel({
               >
                 Edit
               </button>
-              <button
-                className="delete-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDelete(tok);
-                }}
-              >
-                Delete
-              </button>
             </div>
           );
         })}

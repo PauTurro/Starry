@@ -254,12 +254,12 @@ input:-webkit-autofill,
      12. Toggle Buttons
      =========================== */
   .toggle-btn {
-    width: 250px;
-    height: 85px;
-    font-size: 28px;
-    font-weight: 550;
+    width: 350px;
+    height: 90px;
+    font-size: 50px;
+    font-weight: 900;
     color: #372d2d;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
     transition: background-color 0.8s ease, transform 0.2s ease;
     background-color: rgba(255, 207, 95, 0.7);

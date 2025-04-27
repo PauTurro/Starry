@@ -218,7 +218,7 @@ input:-webkit-autofill,
 
   /* Style for the entire screen when control panel is active */
   .control-panel-screen {
-    background-color: #ffd1bd;
+    background-color: #fff0fe;
     width: 100%;
     min-height: 100vh; /* Ensure it covers the full viewport height */
     display: flex; /* Use flex to easily center content if needed */
@@ -266,13 +266,13 @@ input:-webkit-autofill,
   }
   
 .toggle-btn.open {
-    background-color: #ff7e9c; /* Yellow */
-    border: 3.5px solid #ff7e9c;
+    background-color: #ffd7ea; /* Yellow */
+    border: 3.5px solid #ffd7ea;
   }
   
   .toggle-btn.closed {
-    background-color: #eddede; /* Purple */
-    border: 3.5px solid #eddede;
+    background-color: #fff8ff; /* Purple */
+    border: 3.5px solid #fff8ff;
   }
   
   .toggle-btn:hover {
@@ -298,8 +298,8 @@ input:-webkit-autofill,
   .rename-btn {
     /* Reset button styles */
     background-color: transparent;
-    border: 1px solid #aaa; /* Simple border */
-    color: #555;
+    border: 1px solid #ffd7ea; /* Simple border */
+    color: #ffd7ea;
     padding: 2px 6px; /* Small padding */
     font-size: 0.8rem; /* Smaller font */
     font-weight: normal;
@@ -332,7 +332,7 @@ input:-webkit-autofill,
     height: 50px;
     font-size: 1.1rem;
     font-weight: 500;
-    color: #372d2d;
+    color: #332b54;
     background-color: #ff9898db;
     border: none;
     border-radius: 12px;
@@ -516,7 +516,7 @@ input:-webkit-autofill,
   /* Match style of #tokenDisplay */
   font-size: 0.9rem;
   font-weight: 900;
-  color: #313131;
+  color: #332b54;
   margin-top: 5px; /* Keep space above the list */
   margin-bottom: 5px; /* Keep space below the list */
   /* width: 100%; Removed */
@@ -537,7 +537,7 @@ input:-webkit-autofill,
   display: inline-block;
   /* background-color removed - will be set individually */
   border: none;
-  color: #372d2d;
+  color: #332b54;
   padding: 12px 20px; /* Further increased padding */
   margin-top: 0; /* Rely on container gap */
   font-size: 1.1rem; /* Further increased font size */

@@ -542,14 +542,12 @@ input:-webkit-autofill,
   width: 350px;
   height: 90px;
   font-size: 50px;
-  font-weight: 450;
+  font-weight: 400;
   color: #372d2d;
-  border-radius: 25px;
   text-decoration: none;
-  border-radius: 12px; /* Further increased radius */
+  border-radius: 25px; /* Further increased radius */
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.1s ease;
-
   text-align: center;
 }
 

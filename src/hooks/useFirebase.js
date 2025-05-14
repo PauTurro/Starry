@@ -1,7 +1,7 @@
 // ===========================
 // File: src/hooks/useFirebase.js
 // ===========================
-import { useEffect, useState, useCallback, useRef } from "react"; // Import useRef
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -29,13 +29,12 @@ export function useFirebase() {
   const [user, setUser] = useState(null);
   const [tokens, setTokens] = useState([]);
   const [buttonState, setButtonState] = useState({});
-  const [buttonNames, setButtonNames] = useState({}); // State for button names
+  const [buttonNames, setButtonNames] = useState({});
   const [isButtonDataLoaded, setIsButtonDataLoaded] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [error, setError] = useState(null);
-  const errorTimeoutRef = useRef(null); // Ref to store timeout ID
+  const errorTimeoutRef = useRef(null);
 
-  // Clears the error and any pending timeout
   const clearError = useCallback(() => {
     if (errorTimeoutRef.current) {
       clearTimeout(errorTimeoutRef.current);
@@ -44,39 +43,42 @@ export function useFirebase() {
     setError(null);
   }, []);
 
-  // Sets an error message and clears it after a delay
   const showError = useCallback((message) => {
     if (errorTimeoutRef.current) {
-      clearTimeout(errorTimeoutRef.current); // Clear previous timeout
+      clearTimeout(errorTimeoutRef.current);
     }
-    setError(message); // Set the new error message
-    if (message) { // Only set timeout if there's an actual message
+    setError(message);
+    if (message) {
       errorTimeoutRef.current = setTimeout(() => {
-        setError(null); // Clear the error after delay
+        setError(null);
         errorTimeoutRef.current = null;
-      }, 4000); // 4 seconds delay
+      }, 4000);
     }
   }, []);
 
   const register = async (email, password) => {
-    clearError(); // Use clearError instead of setError(null)
+    clearError();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        // Tokens will already have "hello" status because of the improved ensureToken()
+        console.log("User registered and initial tokens set.");
+      }
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
-        showError("Email already registered"); // Use showError
+        showError("Email already registered");
       } else if (err.code === "auth/weak-password") {
-        showError("6 characters or more"); // Use showError
+        showError("6 characters or more");
       } else if (err.code === "auth/invalid-email") {
-        showError("Invalid email"); // Use showError
+        showError("Invalid email");
       } else {
-        showError("Registration failed. Please try again."); // Use showError
+        showError("Registration failed. Please try again.");
       }
     }
   };
 
   const login = async (email, password) => {
-    clearError(); // Use clearError instead of setError(null)
+    clearError();
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
@@ -87,19 +89,18 @@ export function useFirebase() {
         "auth/invalid-email",
       ];
       if (codes.includes(err.code)) {
-        showError("Wrong email or password"); // Use showError
+        showError("Wrong email or password");
       } else {
-        showError("Wrong email or password"); // Use showError
+        showError("Wrong email or password");
       }
     }
   };
 
   const logout = async () => {
-    clearError(); // Use clearError
+    clearError();
     await signOut(auth);
   };
 
-  // Toggle a button's open/closed state if user is authorized
   const toggleButton = async (token) => {
     const path = `tokens/${token}/buttonStatus`;
     const snap = await get(ref(db, path));
@@ -108,23 +109,19 @@ export function useFirebase() {
     await set(ref(db, path), next);
   };
 
-  // Update the name of a button
   const updateButtonName = async (token, newName) => {
-    if (!user || !tokens.includes(token)) return; // Basic auth check
+    if (!user || !tokens.includes(token)) return;
     const path = `tokens/${token}/buttonName`;
     try {
-      await set(ref(db, path), newName || null); // Set to null if empty to remove
+      await set(ref(db, path), newName || null);
     } catch (err) {
       console.error("Error updating button name:", err);
       showError("Failed to update name.");
     }
   };
 
-  // Share a device token with another user (by UID)
   const shareToken = async (token, targetUid) => {
-    // grant authorization in token metadata
     await set(ref(db, `tokens/${token}/authorizedUsers/${targetUid}`), true);
-    // add token to target user's list without overwriting existing tokens
     const userTokensRef = ref(db, `users/${targetUid}/deviceTokens`);
     const snap = await get(userTokensRef);
     const existing = snap.exists() && Array.isArray(snap.val()) ? snap.val() : [];
@@ -133,7 +130,6 @@ export function useFirebase() {
     }
   };
 
-  // Revoke a previously shared token
   const revokeShare = async (token, targetUid) => {
     await set(ref(db, `tokens/${token}/authorizedUsers/${targetUid}`), null);
     const userTokensRef = ref(db, `users/${targetUid}/deviceTokens`);
@@ -144,17 +140,14 @@ export function useFirebase() {
     }
   };
 
-  // Ensure the current user's list of tokens (owned + shared)
   const ensureToken = useCallback(async (uid) => {
     const userTokensRef = ref(db, `users/${uid}/deviceTokens`);
     const snap = await get(userTokensRef);
     let userTokens = [];
 
     if (snap.exists() && Array.isArray(snap.val())) {
-      // existing owned or shared tokens
       userTokens = snap.val();
     } else {
-      // new user: generate owned tokens
       const newTokens = Array.from({ length: NUM_TOKENS }, generateToken);
       userTokens = newTokens;
       const updates = { [`/users/${uid}/deviceTokens`]: userTokens };
@@ -162,7 +155,7 @@ export function useFirebase() {
         updates[`/tokens/${tok}`] = {
           owner: uid,
           authorizedUsers: { [uid]: true },
-          buttonStatus: "closed",
+          buttonStatus: "hello", // <<=== now directly set to "hello" on creation!
         };
       });
       await update(ref(db), updates);
@@ -173,16 +166,14 @@ export function useFirebase() {
     listenToAllButtonStates(userTokens);
   }, []);
 
-  // Listen to buttonStatus and buttonName for each token in the list
   const listenToAllButtonStates = (tokenList) => {
     const loadedStates = {};
     const loadedNames = {};
     setButtonState({});
-    setButtonNames({}); // Reset names state
+    setButtonNames({});
     setIsButtonDataLoaded(false);
 
     if (tokenList.length === 0) {
-      setIsButtonDataLoaded(true);
       setIsButtonDataLoaded(true);
       return;
     }
@@ -197,7 +188,6 @@ export function useFirebase() {
     };
 
     tokenList.forEach((tok) => {
-      // Listener for buttonStatus
       const statusRef = ref(db, `tokens/${tok}/buttonStatus`);
       onValue(
         statusRef,
@@ -205,7 +195,6 @@ export function useFirebase() {
           let state = snap.val();
           if (typeof state !== "string") {
             state = "closed";
-            // Optionally set default state in DB if needed: set(statusRef, state);
           }
           setButtonState((prev) => ({ ...prev, [tok]: state }));
           loadedStates[tok] = true;
@@ -213,24 +202,23 @@ export function useFirebase() {
         },
         (err) => {
           console.error(`Error listening to status for ${tok}:`, err);
-          loadedStates[tok] = true; // Mark as loaded even on error to avoid blocking
+          loadedStates[tok] = true;
           checkAllLoaded();
         }
       );
 
-      // Listener for buttonName
       const nameRef = ref(db, `tokens/${tok}/buttonName`);
       onValue(
         nameRef,
         (snap) => {
-          const name = snap.val() || null; // Store null if no name exists
+          const name = snap.val() || null;
           setButtonNames((prev) => ({ ...prev, [tok]: name }));
           loadedNames[tok] = true;
           checkAllLoaded();
         },
         (err) => {
           console.error(`Error listening to name for ${tok}:`, err);
-          loadedNames[tok] = true; // Mark as loaded even on error
+          loadedNames[tok] = true;
           checkAllLoaded();
         }
       );
@@ -244,16 +232,15 @@ export function useFirebase() {
       else {
         setTokens([]);
         setButtonState({});
-        setButtonNames({}); // Clear names on logout
+        setButtonNames({});
         setIsButtonDataLoaded(false);
-        clearError(); // Use clearError
+        clearError();
       }
       setAuthChecked(true);
     });
     return unsub;
-  }, [ensureToken, clearError]); // Added clearError dependency
+  }, [ensureToken, clearError]);
 
-  // Effect to clear timeout on unmount
   useEffect(() => {
     return () => {
       if (errorTimeoutRef.current) {
@@ -266,7 +253,7 @@ export function useFirebase() {
     user,
     tokens,
     buttonState,
-    buttonNames, // Return button names
+    buttonNames,
     isButtonDataLoaded,
     authChecked,
     error,
@@ -274,7 +261,7 @@ export function useFirebase() {
     login,
     logout,
     toggleButton,
-    updateButtonName, // Return update function
+    updateButtonName,
     shareToken,
     revokeShare,
     clearError,

@@ -1,4 +1,4 @@
-/* =========================== 
+/* ===========================
    1. Basic Reset
    =========================== */
    * {
@@ -9,19 +9,19 @@
 
     font-weight: 400; /* default weight for normal text */
   }
-  
+
 
   html, body {
     touch-action: pan-x pan-y;
     margin: 0;
     padding: 0;
   }
-  
+
   /* Remove iOS tap highlight color */
   body, button, input, textarea, select {
     -webkit-tap-highlight-color: transparent;
   }
-  
+
   /* ===========================
      2. Body and Background
      =========================== */
@@ -43,7 +43,7 @@
     min-height: 100vh;
     /* overflow: hidden; Removed */
   }
-  
+
   .background {
     flex: 1;
     display: flex;
@@ -55,7 +55,7 @@
     /* padding-bottom: 100px; Removed */
     box-sizing: border-box; /* Include padding in height calculation */
   }
-  
+
   .container {
     position: relative; /* Establishes a stacking context */
     z-index: 0;         /* Ensures children are above the pseudo-element */
@@ -70,7 +70,7 @@
     box-shadow: 0px 0px 0px #ffffff00;
     /* overflow: hidden; Ensure this remains removed */
   }
-  
+
   .container::before {
     background-color: #ffffff00;
 
@@ -82,7 +82,7 @@
     width: 100%;
     height: 100%;
     border-radius: inherit; /* Inherit border-radius from parent */
-    
+
   }
   /* ===========================
      4. Title
@@ -93,7 +93,7 @@
     color: var(--title-color);
     margin-bottom: 25px;
   }
-  
+
   /* ===========================
      5. Authentication Horizontal Section
      =========================== */
@@ -106,7 +106,7 @@
     flex-wrap: nowrap;
     margin-top: 25px;
   }
-  
+
 /* ===========================
      6. Input Fields
      =========================== */
@@ -124,24 +124,24 @@
        outline: none;
        transition: border-color 0.3s ease;
      }
-     
+
      /* Style the placeholder text for modern browsers */
      input[type="email"]::placeholder,
      input[type="password"]::placeholder {
        color: var(--input-text-color);
      }
-     
+
      /* For older browsers using vendor prefixes */
      input[type="email"]::-webkit-input-placeholder,
      input[type="password"]::-webkit-input-placeholder {
        color: var(--input-text-color);
      }
-     
+
      input[type="email"]:-ms-input-placeholder,
      input[type="password"]:-ms-input-placeholder {
        color: var(--input-text-color);
      }
-     
+
      input[type="email"]:focus,
      input[type="password"]:focus {
        border-color: rgb(239, 132, 159);
@@ -161,8 +161,8 @@ input:-webkit-autofill,
         caret-color: #888888 !important;
         background-clip: padding-box !important;
      }
-   
-  
+
+
   /* ===========================
      7. Buttons (General)
      =========================== */
@@ -178,16 +178,16 @@ input:-webkit-autofill,
       cursor: pointer;
       transition: background-color 0.45s ease, transform 0.2s ease;
     }
-    
-  
+
+
   button:hover {
     background-color: #f44d7d;
   }
-  
+
   button:active {
     transform: scale(1);
   }
-  
+
   /* ===========================
      8. Login ("Go") Button
      =========================== */
@@ -195,11 +195,11 @@ input:-webkit-autofill,
     min-width: 30px;
     background-color: #ee687d;
   }
-  
+
   .login-btn:hover {
     background-color: #f44d7d;
   }
-  
+
   /* ===========================
    9. Control Section
    =========================== */
@@ -227,7 +227,7 @@ input:-webkit-autofill,
     padding-top: 50px; /* Add some padding at the top */
     box-sizing: border-box;
   }
-  
+
   /* ===========================
      10. Token Display
      =========================== */
@@ -238,7 +238,7 @@ input:-webkit-autofill,
     color: #8a6595;
     margin-top: 20px;
   }
-  
+
   /* ===========================
      11. Toggle Buttons Container
      =========================== */
@@ -249,7 +249,7 @@ input:-webkit-autofill,
     align-items: center;
     margin-top: 15px;
   }
-  
+
   /* ===========================
      12. Toggle Buttons
      =========================== */
@@ -261,20 +261,20 @@ input:-webkit-autofill,
     color: #372d2d;
     border-radius: 25px;
     cursor: pointer;
-    transition: background-color 0.8s ease, transform 0.2s ease;
+    transition: background-color 0.8s ease, transform 0.3s ease-out;
     background-color: rgba(255, 207, 95, 0.7);
   }
-  
+
 .toggle-btn.open {
     background-color: #ffc8e1; /* Yellow */
     border: 3.5px solid #ffc8e1;
   }
-  
+
   .toggle-btn.closed {
     background-color: #fff8ff; /* Purple */
     border: 3.5px solid #fff8ff;
   }
-  
+
   .toggle-btn:hover {
     transform: scale(1.03); /* grow slightly on hover */
     position: relative; /* Needed for absolute positioning of rename button if used */
@@ -342,15 +342,15 @@ input:-webkit-autofill,
     margin-right: auto; /* Restore */
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
-  
+
   #logoutBtn:hover {
     background-color: #ff8e8e;
   }
-  
+
   #logoutBtn:active {
     transform: scale(0.98);
   }
-  
+
   @media screen and (max-width: 600px) {
     /* Remove scrolling entirely on small screens */
     html, body {
@@ -359,7 +359,7 @@ input:-webkit-autofill,
       height: 100%;
       /* overflow: hidden !important; Removed to allow scrolling */
     }
-  
+
     /* Keep the fixed background */
     body {
       background-attachment: fixed;
@@ -367,7 +367,7 @@ input:-webkit-autofill,
       background-position: center;
       background-repeat: no-repeat;
     }
-  
+
     /* Make the container fill the screen (no scroll) */
     .container {
       width: 100% !important;
@@ -379,7 +379,7 @@ input:-webkit-autofill,
       position: static !important;
       /* overflow: hidden; Removed to allow scrolling */
     }
-  
+
     /* Adjust the title size and position */
     .title {
       font-size: 2.1rem !important;
@@ -394,7 +394,7 @@ input:-webkit-autofill,
       margin-left: auto;
       margin-right: auto;
     }
-  
+
     /* Stack the email & password fields vertically */
     .auth-horizontal {
       flex-direction: column;
@@ -403,7 +403,7 @@ input:-webkit-autofill,
       gap: 11px;
       margin-top: 16px;
     }
-  
+
     /* Make inputs fill more space on phone + border width adjustment */
     input[type="email"],
     input[type="password"] {
@@ -415,12 +415,12 @@ input:-webkit-autofill,
       outline: none;
       transition: border-color 0.3s ease;
     }
-  
+
     input[type="email"]:focus,
     input[type="password"]:focus {
       border-color: #fec1d0;
     }
-  
+
     /* Buttons: widen, increase text size, etc. */
     .login-btn {
       width: 15%;
@@ -429,7 +429,7 @@ input:-webkit-autofill,
       margin: 0 auto;
       border-radius: 18px;
     }
-  
+
     button {
       width: 30%;
       max-width: 200px;
@@ -551,6 +551,22 @@ input:-webkit-autofill,
   text-align: center;
 }
 
+/* Style for the settings button containing the image */
+.settings-button {
+  padding: 0; /* Remove padding */
+  display: flex; /* Use flexbox to center the image */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+/* Style for the gear icon image */
+.settings-icon {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  display: block; /* Remove extra space below the image */
+}
+
+
 /* Individual button colors */
 /* Note: :nth-child indices account for the <ul> element */
 
@@ -590,7 +606,7 @@ input:-webkit-autofill,
 .plus-menu-btn:active {
   transform: scale(0.98); /* Consistent active state */
 }
-  
+
   /* ===========================
      15. Fade Animations
      =========================== */
@@ -598,19 +614,19 @@ input:-webkit-autofill,
     0% { opacity: 0; transform: translateY(-10px); }
     100% { opacity: 1; transform: translateY(0); }
   }
-  
+
   @keyframes fadeInSlower {
     0% { opacity: 0; transform: translateY(10px); }
     100% { opacity: 1; transform: translateY(0); }
   }
-  
+
   /* Title fade-in */
   .title {
     animation: fadeInTitle 1.5s ease forwards;
     opacity: 0;
     transform: translateY(-10px);
   }
-  
+
   /* Inputs & register fade-in */
   .auth-horizontal input[type="email"],
   .auth-horizontal input[type="password"],
@@ -620,10 +636,10 @@ input:-webkit-autofill,
     transform: translateY(10px);
     animation: fadeInSlower 1s ease forwards;
   }
-  
-  /* 
-     Autofill Fix: 
-     Tries to override iOS Safari's yellow background. 
+
+  /*
+     Autofill Fix:
+     Tries to override iOS Safari's yellow background.
      Not always guaranteed in a PWA, but this is the correct attempt.
   */
   input:-webkit-autofill,
@@ -635,7 +651,7 @@ input:-webkit-autofill,
     box-shadow: 0 0 0 30px #00000000 inset !important;
     transition: background-color 5000s ease-in-out 0s;
   }
-  
+
   /* ===========================
    15. For Mobile (up to 768px)
    =========================== */
@@ -671,7 +687,7 @@ input:-webkit-autofill,
       opacity: 1 !important;
     }
   }
-  
+
   /* ===========================
      16. Container Fade-in from JS
      =========================== */
@@ -681,17 +697,17 @@ input:-webkit-autofill,
     pointer-events: none;    /* No interaction while invisible */
     transition: opacity 0.7s ease-in-out;
   }
-  
+
   #appContainer.fade-in {
     opacity: 1;
     pointer-events: auto;
   }
-  
+
   /* Remove container shadow if user is logged in */
   .container.logged-in {
     box-shadow: none !important;
   }
-  
+
   /* ===========================
      17. Desktop (>=769px)
      Remove box styling ONLY if .logged-in
@@ -707,32 +723,32 @@ input:-webkit-autofill,
       border-radius: 0 !important;
     }
   }
-  
+
   /**********************************************
    *  FADE IN: Token, Toggle Buttons, and Logout
    **********************************************/
-  
+
   /* 1) Token Display (appears first, small movement) */
   #tokenDisplay {
     opacity: 0;
     transform: translateY(3px);
     animation: fadeInSlower 0.8s ease 0s forwards; /* 0.8s, starts at 0s */
   }
-  
+
   /* 2) Toggle Buttons Container (slight delay after token) */
   .toggle-buttons {
     opacity: 0;
     transform: translateY(3px);
     animation: fadeInSlower 0.8s ease 0.2s forwards; /* 0.8s, starts at 0.2s */
   }
-  
+
   /* 3) Logout Button (appears last, a bit more delay) */
   #logoutBtn {
     opacity: 0;
     transform: translateY(0px);
     animation: fadeInSlower 1.4s ease 0.2s forwards; /* 1.4s, starts at 0.2s */
   }
-  
+
   @media screen and (max-width: 600px) {
     /* Custom button styles for mobile */
     button,
@@ -744,7 +760,7 @@ input:-webkit-autofill,
       border-radius: var(--mobile-button-border-radius, 20px) !important;
       margin: var(--mobile-button-margin, 5px auto) !important;
     }
-    
+
     /* Custom token text styles for mobile */
     #tokenDisplay {
       font-size: var(--mobile-token-font-size, 1.2rem) !important;
@@ -752,7 +768,7 @@ input:-webkit-autofill,
       text-align: center !important;
       margin: var(--mobile-token-margin, 10px auto) !important;
     }
-    
+
     /* Custom container adjustments for mobile */
     .container {
       padding: var(--mobile-container-padding, 15px) !important;
@@ -824,7 +840,7 @@ input:-webkit-autofill,
   button,
   .login-btn,
   .toggle-btn,
-  #logoutBtn {
+    #logoutBtn {
     font-size: 1.2rem !important;
     padding: 10px 14px !important;
   }
@@ -862,12 +878,12 @@ input:-webkit-autofill,
     z-index: 1001; /* Ensure it's above other content */
     animation: fadeInError 0.5s ease forwards;
   }
-  
+
   /* When fading out */
   .error-banner.fade-out {
     animation: fadeOutError 0.6s ease forwards;
   }
-  
+
   /* Slide down and fade in */
   @keyframes fadeInError {
     from {
@@ -879,7 +895,7 @@ input:-webkit-autofill,
       transform: translate(-50%, 0); /* Final position */
     }
   }
-  
+
   /* Slide up and fade out */
   @keyframes fadeOutError {
     from {
@@ -891,3 +907,28 @@ input:-webkit-autofill,
       transform: translate(-50%, -20px); /* Slide up */
     }
   }
+
+.small-btn {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  height: auto;
+  width: auto;
+}
+
+@keyframes vibrate {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-3px, -3px) rotate(-1deg); }
+  40% { transform: translate(3px, 3px) rotate(1deg); }
+  60% { transform: translate(-3px, 3px) rotate(0deg); }
+  80% { transform: translate(3px, -3px) rotate(-1deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.is-vibrating {
+  animation: vibrate 1s ease-in-out infinite;
+  transition: none; /* Disable transition while vibrating */
+}
+
+.toggle-btn:not(.is-vibrating) {
+  animation-play-state: paused;
+}

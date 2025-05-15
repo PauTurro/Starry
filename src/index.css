@@ -181,7 +181,7 @@ input:-webkit-autofill,
 
 
   button:hover {
-    background-color: #f44d7d;
+    background-color: #170d0f00;
   }
 
   button:active {
@@ -333,7 +333,7 @@ input:-webkit-autofill,
     font-size: 1.1rem;
     font-weight: 500;
     color: #332b54;
-    background-color: #ff9898db;
+    background-color: #ff989800;
     border: none;
     border-radius: 12px;
     cursor: pointer;
@@ -344,7 +344,7 @@ input:-webkit-autofill,
   }
 
   #logoutBtn:hover {
-    background-color: #ff8e8e;
+    background-color: #ff8e8e00;
   }
 
   #logoutBtn:active {
@@ -454,8 +454,8 @@ input:-webkit-autofill,
 /* Removed obsolete #tokenDisplay rule */
 
 .plus-button {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%; /* Make it round */
   font-size: 1.5rem; /* Adjust '+' size */
   line-height: 28px; /* Center the '+' vertically */
@@ -551,16 +551,28 @@ input:-webkit-autofill,
   text-align: center;
 }
 
+.plus-menu-btn:hover {
+  transform: scale(1.1); /* Make buttons bigger on hover */
+}
+
 /* Style for the settings button containing the image */
 .settings-button {
   padding: 0; /* Remove padding */
   display: flex; /* Use flexbox to center the image */
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
+  background-color: transparent;
 }
 
 /* Style for the gear icon image */
 .settings-icon {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  display: block; /* Remove extra space below the image */
+}
+
+/* Style for the images inside the buttons */
+.button-icon {
   width: 40px; /* Adjust size as needed */
   height: 40px; /* Adjust size as needed */
   display: block; /* Remove extra space below the image */
@@ -572,34 +584,34 @@ input:-webkit-autofill,
 
 /* Tokens Button (1st button) */
 .token-list-container .plus-menu-btn:nth-child(1) {
-  background-color: #ffb3c1; /* Light Pink */
+  background-color: transparent;
 }
 .token-list-container .plus-menu-btn:nth-child(1):hover {
-  background-color: #ed9fd3; /* Darker Light Pink */
+  background-color: transparent;
 }
 
 /* Settings Button (3rd element, 2nd button) */
 .token-list-container .plus-menu-btn:nth-child(3) {
-  background-color: #ffb3b3; /* Light Peach */
+  background-color: transparent;
 }
 .token-list-container .plus-menu-btn:nth-child(3):hover {
-  background-color: #f99d9d; /* Darker Light Peach */
+  background-color: transparent !important;
 }
 
 /* Friends Button (4th element, 3rd button) */
 .token-list-container .plus-menu-btn:nth-child(4) {
-  background-color: #c193b5; /* Light Apricot */
+  background-color: transparent;
 }
 .token-list-container .plus-menu-btn:nth-child(4):hover {
-  background-color: #bf79ac; /* Darker Light Apricot */
+  background-color: transparent;
 }
 
 /* Logout Button (5th element, 4th button) */
 .token-list-container .plus-menu-btn:nth-child(5) {
-  background-color: #dea2a2; /* Original Logout Color */
+  background-color: transparent;
 }
 .token-list-container .plus-menu-btn:nth-child(5):hover {
-  background-color: #131212; /* Darker Original Logout */
+  background-color: transparent;
 }
 
 
@@ -759,6 +771,11 @@ input:-webkit-autofill,
       font-size: var(--mobile-button-font-size, 1.2rem) !important;
       border-radius: var(--mobile-button-border-radius, 20px) !important;
       margin: var(--mobile-button-margin, 5px auto) !important;
+    }
+
+    .toggle-btn {
+      font-size: 1.5rem !important; /* Make toggle button text bigger */
+      width: 90% !important; /* Make toggle buttons wider */
     }
 
     /* Custom token text styles for mobile */

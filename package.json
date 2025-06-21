@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://pauturro.github.io/STARR",
+  "homepage": "https://pauturro.github.io/Starry",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

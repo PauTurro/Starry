@@ -1,52 +1,62 @@
 // public/service-worker.js
 
-// Cache version
 const CACHE_NAME = 'starry-cache-v1';
 
-// Files to cache
+// Minimal shell files to cache (safe and stable)
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/manifest.json',
-  '/assets/icon-192x192-CgNvzESX.png', // Your app icon
-  // NOTE: Add other important files if needed
+  'index.html',
+  'manifest.json',
+  'icons/icon-192x192.png',
+  'icons/icon-512x512.png',
 ];
 
-// Install event
+// Install: cache the shell
 self.addEventListener('install', (event) => {
   console.log('[ServiceWorker] Install');
+
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('[ServiceWorker] Caching app shell');
         return cache.addAll(urlsToCache);
       })
-      .then(() => self.skipWaiting()) // 💥 Force activate after install
+      .catch((error) => {
+        console.error('[ServiceWorker] Cache addAll failed:', error);
+      })
+      .finally(() => self.skipWaiting())
   );
 });
 
-// Activate event
+// Activate: clean old caches
 self.addEventListener('activate', (event) => {
   console.log('[ServiceWorker] Activate');
+
   event.waitUntil(
-    caches.keys().then((keyList) => {
-      return Promise.all(keyList.map((key) => {
-        if (key !== CACHE_NAME) {
-          console.log('[ServiceWorker] Removing old cache', key);
-          return caches.delete(key);
-        }
-      }));
-    })
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('[ServiceWorker] Removing old cache:', key);
+            return caches.delete(key);
+          }
+        })
+      )
+    )
   );
-  self.clients.claim(); // 💥 Take control immediately
+
+  self.clients.claim(); // Take control immediately
 });
 
-// Fetch event
+// Fetch: try cache first, then network
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
-      .then((response) => {
-        return response || fetch(event.request);
+      .then((cached) => {
+        return cached || fetch(event.request);
+      })
+      .catch((error) => {
+        console.warn('[ServiceWorker] Fetch failed:', event.request.url, error);
       })
   );
 });

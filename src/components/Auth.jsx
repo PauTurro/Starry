@@ -1,25 +1,17 @@
 import { useState } from "react";
+import { useFirebase } from "../hooks/useFirebase";
 
-export default function Auth({ onLogin, onRegister, error, setError }) {
+export default function Auth() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const { register, login } = useFirebase();
 
   const handleRegister = async () => {
-    if (!email || !pass) {
-      setError("Please enter both email and password.");
-      return;
-    }
-    setError(null);
-    await onRegister(email, pass);
+    await register(email, pass);
   };
 
   const handleLogin = async () => {
-    if (!email || !pass) {
-      setError("Please enter both email and password.");
-      return;
-    }
-    setError(null);
-    await onLogin(email, pass);
+    await login(email, pass);
   };
 
   return (
@@ -31,6 +23,7 @@ export default function Auth({ onLogin, onRegister, error, setError }) {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onTouchStart={(e) => e.target.focus()} // Add onTouchStart to trigger focus
         />
         <input
           type="password"
@@ -38,6 +31,7 @@ export default function Auth({ onLogin, onRegister, error, setError }) {
           placeholder="Password"
           value={pass}
           onChange={(e) => setPass(e.target.value)}
+          onTouchStart={(e) => e.target.focus()} // Add onTouchStart to trigger focus
         />
 
         <button

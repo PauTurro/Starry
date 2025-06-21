@@ -2,18 +2,16 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
+import { FIREBASE_CONFIG } from "./constants";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDWMkL3P7OWlosSFXXRg8gvUQg6-7Y9uu8",
-  authDomain: "esp32door-control.firebaseapp.com",
-  databaseURL: "https://esp32door-control-default-rtdb.firebaseio.com/",
-  projectId: "esp32door-control",
-  storageBucket: "esp32door-control.appspot.com",
-  messagingSenderId: "605127991992",
-  appId: "1:605127991992:web:4d0dccf6ae2d874603ca4d",
-  measurementId: "G-91SJ3GLZ0Z"
-};
+console.log("Initializing Firebase with config:", {
+  projectId: FIREBASE_CONFIG.projectId,
+  authDomain: FIREBASE_CONFIG.authDomain,
+  apiKey: FIREBASE_CONFIG.apiKey ? "***" + FIREBASE_CONFIG.apiKey.slice(-4) : "missing"
+});
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(FIREBASE_CONFIG);
 export const auth = getAuth(app);
 export const db = getDatabase(app);
+
+console.log("Firebase initialized successfully");

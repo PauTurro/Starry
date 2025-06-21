@@ -1,121 +1,116 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useAppContext } from "../hooks/useAppContext";
+import { APP_CONFIG, UI } from "../constants";
+
+const base = import.meta.env.BASE_URL;
 
 export default function ControlPanel({
   tokens,
   buttonState,
   buttonNames,
-  isButtonDataLoaded,
   onToggle,
   onUpdateName,
-  onDelete,
-  onLogout,
 }) {
-  const [showPlusMenu, setShowPlusMenu] = useState(false);
-  const [showTokenListContent, setShowTokenListContent] = useState(false);
+  const { addSettingsMessage } = useAppContext();
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const buttonRefs = useRef([]);
 
   useEffect(() => {
     buttonRefs.current = buttonRefs.current.slice(0, tokens.length);
   }, [tokens]);
 
-  // 🟩 Handle class toggling with graceful stop
   useEffect(() => {
-    if (!isEditMode) {
-      // Exiting edit mode: let the vibration end naturally
-      buttonRefs.current.forEach((btn) => {
-        if (!btn) return;
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= APP_CONFIG.MOBILE_BREAKPOINT);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-        const handleIterationEnd = () => {
-          btn.classList.remove('is-vibrating');
-          btn.removeEventListener('animationiteration', handleIterationEnd);
-        };
-
-        btn.addEventListener('animationiteration', handleIterationEnd);
-      });
-    } else {
-      // Entering edit mode: start vibration
-      buttonRefs.current.forEach((btn) => {
-        if (btn && !btn.classList.contains('is-vibrating')) {
-          btn.classList.add('is-vibrating');
-        }
-      });
-    }
-  }, [isEditMode]);
+  useEffect(() => {
+    const shouldVibrate = isEditMode;
+    buttonRefs.current.forEach((btn) => {
+      if (!btn) return;
+      if (shouldVibrate) {
+        btn.classList.remove("vibration-ending");
+        btn.classList.add("is-vibrating");
+      } else {
+        btn.classList.add("vibration-ending");
+        setTimeout(() => {
+          btn.classList.remove("is-vibrating");
+          btn.classList.remove("vibrating");
+          btn.classList.remove("vibration-ending");
+        }, APP_CONFIG.VIBRATION_DURATION);
+      }
+    });
+  }, [isEditMode, isMobile]);
 
   const handleToggle = (tok) => {
     onToggle(tok);
   };
 
-  const handleDelete = (tok) => {
-    onDelete(tok);
-  };
-
-  const handlePlusButtonClick = () => {
-    setIsEditMode((v) => !v);
-    setShowPlusMenu((v) => !v);
+  const handleButtonPress = (currentName, newState) => {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+    addSettingsMessage(`${currentName} ${newState} at ${timeString}`);
   };
 
   return (
-    <div id="controlSection" className="control-panel">
-      <div className="token-header">
-        <button className="plus-button" onClick={handlePlusButtonClick}>
-          +
-        </button>
+    <div className="control-panel-screen">
+      <div className="control-panel-header">
+        <h2 className="my-doors-title">Doors</h2>
+        <button
+          className="plus-button"
+          onClick={() => setIsEditMode((prev) => !prev)}
+        ></button>
       </div>
 
-      <div className="toggle-buttons">
-        {tokens.map((tok, idx) => {
-          if (buttonState[tok] !== "open" && buttonState[tok] !== "closed") {
-            return null;
-          }
+      {/* ✅ This wrapper ensures full-width content inside the centered panel */}
+      <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+        <div className="toggle-buttons">
+          {tokens.map((tok, idx) => {
+            const currentState = buttonState[tok];
+            if (currentState !== UI.BUTTON_STATES.OPEN && currentState !== UI.BUTTON_STATES.CLOSED) return null;
 
-          return (
-            <div key={tok} className="toggle-btn-wrapper">
-              <button
-                ref={el => buttonRefs.current[idx] = el}
-                id={`toggle-${tok}`}
-                className={`toggle-btn ${buttonState[tok] === "open" ? "open" : "closed"}`}
-                style={{ animationDelay: `${idx * 0.1}s` }}
-                onClick={() => {
-                  if (isEditMode) {
-                    const currentName = buttonNames?.[tok] || `Button ${idx + 1}`;
-                    const newName = prompt(`Enter new name for \"${currentName}\"`, currentName);
-                    if (newName != null) onUpdateName(tok, newName.trim());
-                  } else {
-                    handleToggle(tok);
-                  }
-                }}
-              >
-                <span className="toggle-btn-text">
-                  {buttonNames?.[tok] || `Button ${idx + 1}`}
-                </span>
-              </button>
-            </div>
-          );
-        })}
-      </div>
+            const currentName = buttonNames?.[tok] || `Button ${idx + 1}`;
+            const newState = currentState === UI.BUTTON_STATES.OPEN ? UI.BUTTON_STATES.CLOSED : UI.BUTTON_STATES.OPEN;
 
-      <div className={`token-list-container ${showPlusMenu ? "visible" : ""}`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px' }}>
-        <button className="plus-menu-btn small-btn" onClick={() => setShowTokenListContent((v) => !v)}>
-          <img src="icons/token.png" alt="Tokens" className="button-icon" />
-        </button>
-        {showTokenListContent && (
-          <ul className="token-list">
-            {tokens.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
-        )}
-        <button className="plus-menu-btn settings-button small-btn" onClick={() => alert("Settings clicked!")}>
-          <img src="icons/gear.png" alt="Settings" className="settings-icon" />
-        </button>
-        <button className="plus-menu-btn small-btn" onClick={() => alert("Friends clicked!")}>
-          <img src="icons/friends.png" alt="Friends" className="button-icon" />
-        </button>
-        <button className="plus-menu-btn small-btn" onClick={onLogout}>
-          <img src="icons/tl.webp" alt="Logout" className="button-icon" />
-        </button>
+            return (
+              <div key={tok} className="toggle-btn-wrapper">
+                <button
+                  ref={(el) => (buttonRefs.current[idx] = el)}
+                  id={`toggle-${tok}`}
+                  className={`toggle-btn ${currentState}`}
+                  style={{ animationDelay: `${idx * UI.ANIMATION_DELAYS.BUTTON_STAGGER}s` }}
+                  onClick={() => {
+                    if (isEditMode) {
+                      const newName = prompt(`Rename "${currentName}"`, currentName);
+                      if (newName != null) {
+                        onUpdateName(tok, newName.trim());
+                      }
+                    } else {
+                      handleToggle(tok);
+                      handleButtonPress(currentName, newState);
+                    }
+                  }}
+                >
+                  <img 
+                    src={`${base}icons/House1.png`} 
+                    alt="House" 
+                    className="toggle-btn-icon"
+                  />
+                  <span className="toggle-btn-text">{currentName}</span>
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

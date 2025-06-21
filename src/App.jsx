@@ -100,7 +100,7 @@ function AppContent() {
 export default function App() {
   return (
     <AppProvider>
-      <Router basename="/STARR">
+      <Router basename="/Starry">
         <Layout>
           <AppContent />
         </Layout>
